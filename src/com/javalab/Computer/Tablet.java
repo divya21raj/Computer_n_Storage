@@ -1,8 +1,8 @@
 package com.javalab.Computer;
 
-public class Laptop extends Computer implements Charger
+public class Tablet extends Computer implements Charger
 {
-    Laptop(float ramSize, String processor, String motherboard)
+    Tablet(float ramSize, String processor, String motherboard)
     {
         this.ramSize = ramSize;
         this.processor = processor;
@@ -12,6 +12,7 @@ public class Laptop extends Computer implements Charger
     @Override
     public void charge()
     {
-        System.out.println("The Laptop is charging...");
+        System.out.println("The tablet is charging...");
     }
 }
+
