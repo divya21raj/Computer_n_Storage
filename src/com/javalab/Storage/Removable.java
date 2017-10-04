@@ -4,15 +4,11 @@ public class Removable extends Storage
 {
     @Override
     void capacity()
-    {
-
-    }
+    {}
 
     @Override
     void persistenceSave()
-    {
-
-    }
+    {}
 
     Data d;
 }

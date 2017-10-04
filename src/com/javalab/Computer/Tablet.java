@@ -2,7 +2,7 @@ package com.javalab.Computer;
 
 public class Tablet extends Computer implements Charger
 {
-    Tablet(float ramSize, String processor, String motherboard)
+    public Tablet(float ramSize, String processor, String motherboard)
     {
         this.ramSize = ramSize;
         this.processor = processor;

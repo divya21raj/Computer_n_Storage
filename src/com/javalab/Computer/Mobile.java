@@ -2,7 +2,7 @@ package com.javalab.Computer;
 
 public class Mobile extends Computer implements Charger
 {
-    Mobile(float ramSize, String processor, String motherboard)
+    public Mobile(float ramSize, String processor, String motherboard)
     {
         this.ramSize = ramSize;
         this.processor = processor;
