@@ -19,6 +19,8 @@ public class Main {
 
     private static BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
 
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    
     public static void main(String[] args) throws IOException
     {
         int cho;
@@ -39,6 +41,8 @@ public class Main {
 
 
     }
+
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     static void userLogin() throws IOException
     {
@@ -91,8 +95,6 @@ public class Main {
 
         }while(cho!=3);
     }
-
-
 
     static void computersMenu() throws IOException
     {
