@@ -10,13 +10,25 @@ public class Data
     ArrayList<String> files;
     ArrayList<Double> size; //size of each file in files
 
+    Double usedSpace; //memory taken up by files
+
     static ArrayList<String> allFiles;
     static ArrayList<Double> allFileSize;
+    private Double capacity;
 
-    Data() throws IOException
+    public Double getCapacity()
+    {
+        return capacity;
+    }
+
+    Data(Double capacity) throws IOException
     {
         if(allFiles.isEmpty() == true)
             allFilesInit();
+
+        usedSpace = 0d;
+
+        this.capacity = capacity;
 
         fillData(files);
 
@@ -26,18 +38,26 @@ public class Data
     {
         Random random = new Random();
 
-        ArrayList<Integer> numList = new ArrayList<Integer>();
+        ArrayList<Integer> numList = new ArrayList<>();
         for(int i=0; i<allFiles.size(); i++)
             numList.add(i);
 
         Collections.shuffle(numList);
 
+        int numofFiles = random.nextInt(allFiles.size());
 
-        for(int i =0; i< random.nextInt(allFiles.size()); i++)
+        for(int i =0; i< numofFiles; i++)
         {
-            files.add(allFiles.get(numList.get(i)));
-            size.add(allFileSize.get(numList.get(i)));
+            if(usedSpace + allFileSize.get(numList.get(i)) <= capacity)
+            {
+                files.add(allFiles.get(numList.get(i)));
+                size.add(allFileSize.get(numList.get(i)));
+
+                usedSpace += allFileSize.get(numList.get(i));
+            }
         }
+
+
 
     }
 
@@ -70,5 +90,20 @@ public class Data
         bufferedReader2.close();
         fileReader1.close();
         fileReader2.close();
+    }
+
+    public ArrayList<String> getFiles()
+    {
+        return files;
+    }
+
+    public ArrayList<Double> getSize()
+    {
+        return size;
+    }
+
+    public Double getUsedSpace()
+    {
+        return usedSpace;
     }
 }

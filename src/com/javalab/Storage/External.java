@@ -1,7 +1,16 @@
 package com.javalab.Storage;
 
+import java.io.IOException;
+
 public class External extends Storage
 {
+    Data d;
+
+    public Data getD()
+    {
+        return d;
+    }
+
     @Override
     void capacity()
     {
@@ -14,5 +23,9 @@ public class External extends Storage
 
     }
 
-    Data d;
+    public External(Double capacity) throws IOException
+    {
+        this.capacity = capacity;
+        d = new Data(capacity);
+    }
 }

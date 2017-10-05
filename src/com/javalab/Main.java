@@ -1,27 +1,20 @@
 package com.javalab;
 
-import com.javalab.Computer.Desktop;
-import com.javalab.Computer.Laptop;
-import com.javalab.Computer.Mobile;
-import com.javalab.Computer.Tablet;
-import com.javalab.Storage.External;
-import com.javalab.Storage.Removable;
-
+import com.javalab.Computer.*;
+import com.javalab.Storage.*;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 
+import static com.javalab.LabourMethods.checkUser;
+import static com.javalab.LabourMethods.clrscr;
+
 public class Main {
 
-    private static ArrayList<Laptop> laptops= new ArrayList<>();
-    private static ArrayList<Desktop> desktops= new ArrayList<>();
-    private static ArrayList<Mobile> mobiles= new ArrayList<>();
-    private static ArrayList<Tablet> tablets= new ArrayList<>();
+    private static ArrayList<User> users = new ArrayList<>();
 
-    private static Removable usb = new Removable();
-    private static External hdd = new External();
-
+    private static User currentUser;
 
     private static BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
 
@@ -31,17 +24,65 @@ public class Main {
 
         do
         {
-            System.out.printf("What do you want to do?\n1.Check out the cool computers!\n2.See the content of the storage devices\n3.Exit\n");
+            System.out.printf("\nWelcome!\n1.Login as user\n2.Exit");
+            cho = Integer.parseInt(bufferedReader.readLine());
+
+            if(cho==1)
+            {
+                userLogin();
+
+                userMenu();
+            }
+
+        }while(cho != 2);
+
+
+    }
+
+    static void userLogin() throws IOException
+    {
+        String name;
+
+        LabourMethods.clrscr();
+
+        System.out.printf("\nEnter name: ");
+        name = bufferedReader.readLine();
+
+        int index = checkUser(name, users);
+
+        if(index != -1)
+        {
+            User temp = new User();
+            temp.name = name;
+
+            users.add(temp);
+
+            currentUser = temp;
+        }
+
+        else
+            currentUser = users.get(index);
+    }
+
+    static void userMenu() throws IOException
+    {
+        int cho;
+
+        do
+        {
+            LabourMethods.clrscr();
+
+            System.out.printf("\nWhat do you want to do?\n1.Check out your cool computers!\n2.See the content of your storage devices\n3.Logout\n");
             cho = Integer.parseInt(bufferedReader.readLine());
 
             switch(cho)
             {
                 case 1:
-                    computers();
+                    computersMenu();
                     break;
 
                 case 2:
-                    storage();
+                    storageMenu();
                     break;
 
                 default: break;
@@ -50,68 +91,169 @@ public class Main {
         }while(cho!=3);
     }
 
-    static void storage() throws IOException
+
+
+    static void computersMenu() throws IOException
+    {
+        int cho;
+        String choice;
+
+        do
+        {
+            LabourMethods.clrscr();
+
+            System.out.printf("\nWhat do you want to access?:\n1.Laptop\n2.Desktop\n3.Tablet\n4.Mobile\n5.To previous menu\n");
+            cho = Integer.parseInt(bufferedReader.readLine());
+
+            if(cho != 5)
+            {
+                switch(cho)
+                {
+                    case 1:
+                        beforeInitDevice(currentUser.laptop, cho);
+                        break;
+                    case 2:
+                        beforeInitDevice(currentUser.desktop, cho);
+                        break;
+                    case 3:
+                        beforeInitDevice(currentUser.tablet, cho);
+                        break;
+                    case 4:
+                        beforeInitDevice(currentUser.mobile, cho);
+                        break;
+
+                    default:break;
+                }
+
+            }
+
+        }while(cho != 5);
+    }
+
+    static void beforeInitDevice(Computer computer, int cho) throws IOException
+    {
+        String choice;
+
+        if(computer == null)
+        {
+            System.out.printf("\nYou don't have this device, do you want one?(Y/N): ");
+            choice = bufferedReader.readLine();
+
+            if ((choice.equals("Y") || choice.equals("y")))
+                initDevice(cho);
+        }
+
+        else
+            deviceMenu(computer);
+    }
+
+    static void deviceMenu(Computer computer) throws IOException
+    {
+        int choice;
+
+        do
+        {
+            clrscr();
+
+            System.out.printf("\nWhat do you want to do with this device?:\n1.See its contents\n2.Charge it\n3.Plug in external device\n4.To previous menu\n");
+            choice = Integer.parseInt(bufferedReader.readLine());
+
+            switch(choice)
+            {
+                case 1:
+                    displayData(computer.getInternal().getD());
+
+                    if(computer.isHasHDD())
+                        displayData(currentUser.hdd.getD());
+
+                    if(computer.isHasUSB())
+                        displayData(currentUser.usb.getD());
+
+                    break;
+
+                case 2:
+                    computer.setCharging(true);
+                    computer.charge();
+            }
+        }while(choice != 4);
+    }
+
+    static void storageMenu() throws IOException
     {
         int cho;
 
         do
         {
+            clrscr();
+
             System.out.printf("\nYou want to see the contents of:\n1.USB device\n2.External HDD\n3.To previous menu");
             cho = Integer.parseInt(bufferedReader.readLine());
 
+            switch (cho)
+            {
+                case 1:
+                    displayData(currentUser.usb.getD());
+                    break;
 
+                case 2:
+                    displayData(currentUser.hdd.getD());
+                    break;
+
+                default:break;
+            }
 
         }while(cho!=3);
     }
 
-    static void computers() throws IOException
+    static void displayData(Data data)
     {
-        int cho;
-
-        do
+        System.out.println("It has the following files and folders.....");
+        for(String file: data.getFiles())
         {
-            System.out.printf("\nChoose b/w:\n1.Laptop\n2.Desktop\n3.Tablet\n4.Mobile\n5.To previous menu\n");
-            cho = Integer.parseInt(bufferedReader.readLine());
+            System.out.println(file);
+        }
 
-            if(cho != 5)
-                initDevice(cho);
+        System.out.println("///////////////////////////////////////////////////////////////////");
+        System.out.printf("%f GB of %f GB used... i.e %4f %", Math.ceil(data.getUsedSpace()/1024), Math.ceil(data.getCapacity()/1024), 100*(data.getUsedSpace()/data.getCapacity()) );
+        System.out.println("///////////////////////////////////////////////////////////////////");
 
-        }while(cho != 5);
     }
 
     static void initDevice(int cho) throws IOException
     {
         String processor, motherboard;
         Float ramSize;
+        Double internal;
 
         System.out.printf("\nEnter the following details for this device:\nProcessor model: ");
         processor = bufferedReader.readLine();
         System.out.printf("\nMotherboard model: ");
         motherboard = bufferedReader.readLine();
-        System.out.printf("\nRam size: ");
+        System.out.printf("\nRam size(GB): ");
         ramSize = Float.parseFloat(bufferedReader.readLine());
+        System.out.printf("\nInternal memory size(GB): ");
+        internal = Double.parseDouble(bufferedReader.readLine());
 
         switch (cho)
         {
             case 1:
-                Laptop templ = new Laptop(ramSize, processor, motherboard);
-                laptops.add(templ);
+                currentUser.laptop = new Laptop(ramSize*1024f, processor, motherboard, internal*1024d);
                 break;
 
             case 2:
-                Desktop tempd = new Desktop(ramSize, processor, motherboard);
-                desktops.add(tempd);
+                currentUser.desktop = new Desktop(ramSize*1024f, processor, motherboard, internal*1024d);
                 break;
 
             case 3:
-                Tablet tempt = new Tablet(ramSize, processor, motherboard);
-                tablets.add(tempt);
+                currentUser.tablet = new Tablet(ramSize*1024f, processor, motherboard, internal*1024d);
                 break;
 
             case 4:
-                Mobile tempm = new Mobile(ramSize, processor, motherboard);
-                mobiles.add(tempm);
+                currentUser.mobile = new Mobile(ramSize*1024f, processor, motherboard, internal*1024d);
                 break;
         }
+
     }
+
+
 }
