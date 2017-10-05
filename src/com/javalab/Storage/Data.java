@@ -12,8 +12,8 @@ public class Data
 
     Double usedSpace; //memory taken up by files
 
-    static ArrayList<String> allFiles;
-    static ArrayList<Double> allFileSize;
+    static ArrayList<String> allFiles = new ArrayList<>();
+    static ArrayList<Double> allFileSize = new ArrayList<>();
     private Double capacity;
 
     public Double getCapacity()
@@ -29,6 +29,9 @@ public class Data
         usedSpace = 0d;
 
         this.capacity = capacity;
+
+        files = new ArrayList<>();
+        size = new ArrayList<>();
 
         fillData(files);
 

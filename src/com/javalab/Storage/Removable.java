@@ -6,12 +6,6 @@ public class Removable extends Storage
 {
     Data d;
 
-    @Override
-    public Double getcapacity()
-    {
-        return this.capacity;
-    }
-
     public Data getD()
     {
         return d;

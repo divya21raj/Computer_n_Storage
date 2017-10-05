@@ -6,6 +6,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 import static com.javalab.LabourMethods.checkUser;
 import static com.javalab.LabourMethods.clrscr;
@@ -24,7 +25,7 @@ public class Main {
 
         do
         {
-            System.out.printf("\nWelcome!\n1.Login as user\n2.Exit");
+            System.out.printf("\nWelcome!\n1.Login as user\n2.Exit\n");
             cho = Integer.parseInt(bufferedReader.readLine());
 
             if(cho==1)
@@ -45,12 +46,12 @@ public class Main {
 
         LabourMethods.clrscr();
 
-        System.out.printf("\nEnter name: ");
+        System.out.printf("\nEnter name: \t\t");
         name = bufferedReader.readLine();
 
         int index = checkUser(name, users);
 
-        if(index != -1)
+        if(index == -1)
         {
             User temp = new User();
             temp.name = name;
@@ -155,27 +156,45 @@ public class Main {
         {
             clrscr();
 
-            System.out.printf("\nWhat do you want to do with this device?:\n1.See its contents\n2.Charge it\n3.Plug in external device\n4.To previous menu\n");
+            System.out.printf("\nWhat do you want to do with this device?:\n1.See its contents\n2.Charge it\n3.Plug in external HDD\n4.Plug in USB\n5.To previous menu\n");
             choice = Integer.parseInt(bufferedReader.readLine());
 
             switch(choice)
             {
                 case 1:
+                    System.out.println("Internal: ");
                     displayData(computer.getInternal().getD());
 
                     if(computer.isHasHDD())
+                    {
+                        System.out.println("External HDD: ");
                         displayData(currentUser.hdd.getD());
+                    }
 
                     if(computer.isHasUSB())
+                    {
+                        System.out.println("USB:");
                         displayData(currentUser.usb.getD());
+                    }
 
                     break;
 
                 case 2:
-                    computer.setCharging(true);
+                    /*computer.setCharging(true);
                     computer.charge();
+                    break;*/
+
+                case 3:
+                    computer.setHasHDD(true);
+                    break;
+
+                case 4:
+                    computer.setHasUSB(true);
+
+                default:break;
+
             }
-        }while(choice != 4);
+        }while(choice != 5);
     }
 
     static void storageMenu() throws IOException
@@ -186,7 +205,7 @@ public class Main {
         {
             clrscr();
 
-            System.out.printf("\nYou want to see the contents of:\n1.USB device\n2.External HDD\n3.To previous menu");
+            System.out.printf("\nYou want to see the contents of:\n1.USB device\n2.External HDD\n3.To previous menu\n");
             cho = Integer.parseInt(bufferedReader.readLine());
 
             switch (cho)
@@ -207,16 +226,21 @@ public class Main {
 
     static void displayData(Data data)
     {
+        clrscr();
+
+        Scanner scanner = new Scanner(System.in);
+
         System.out.println("It has the following files and folders.....");
         for(String file: data.getFiles())
         {
             System.out.println(file);
         }
 
-        System.out.println("///////////////////////////////////////////////////////////////////");
-        System.out.printf("%f GB of %f GB used... i.e %4f %", Math.ceil(data.getUsedSpace()/1024), Math.ceil(data.getCapacity()/1024), 100*(data.getUsedSpace()/data.getCapacity()) );
-        System.out.println("///////////////////////////////////////////////////////////////////");
+        System.out.println("///////////////////////////////////////////////////////////////////////////");
+        System.out.printf("%3f GB of %3f GB used... i.e %4f%c\n", data.getUsedSpace()/1024,data.getCapacity()/1024, 100*(data.getUsedSpace()/data.getCapacity()), '%' );
+        System.out.println("//////////////////////////////////////////////////////////////////////////");
 
+        scanner.nextLine();
     }
 
     static void initDevice(int cho) throws IOException
