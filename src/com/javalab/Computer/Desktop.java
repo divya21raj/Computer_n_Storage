@@ -3,6 +3,7 @@ package com.javalab.Computer;
 import com.javalab.Storage.Internal;
 
 import java.io.IOException;
+import java.util.Scanner;
 
 public class Desktop extends Computer implements Charger
 {
@@ -20,6 +21,9 @@ public class Desktop extends Computer implements Charger
     @Override
     public void charge()
     {
+        Scanner scanner = new Scanner(System.in);
+
         System.out.println("A desktop doesn't charge, you stupid idiot!");
+        scanner.nextLine();
     }
 }

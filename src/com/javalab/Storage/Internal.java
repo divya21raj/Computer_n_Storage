@@ -8,11 +8,15 @@ public class Internal extends Storage
 
     @Override
     void capacity()
-    {}
+    {
+        System.out.println("The capacity of this device is " + Double.toString(this.capacity/1024) + " GB." );
+    }
 
     @Override
     void persistenceSave()
-    {}
+    {
+        System.out.println("This device supports persisting saving!");
+    }
 
     public Internal(Double capacity) throws IOException
     {

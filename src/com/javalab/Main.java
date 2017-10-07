@@ -2,6 +2,8 @@ package com.javalab;
 
 import com.javalab.Computer.*;
 import com.javalab.Storage.*;
+import sun.security.krb5.internal.crypto.Des;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -20,7 +22,7 @@ public class Main {
     private static BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    
+
     public static void main(String[] args) throws IOException
     {
         int cho;
@@ -50,7 +52,7 @@ public class Main {
 
         LabourMethods.clrscr();
 
-        System.out.printf("\nEnter name: \t\t");
+        System.out.printf("\nEnter name:\n");
         name = bufferedReader.readLine();
 
         int index = checkUser(name, users);
@@ -147,10 +149,10 @@ public class Main {
         }
 
         else
-            deviceMenu(computer);
+            deviceMenu(computer, cho);
     }
 
-    static void deviceMenu(Computer computer) throws IOException
+    static void deviceMenu(Computer computer, int cho) throws IOException
     {
         int choice;
 
@@ -182,9 +184,31 @@ public class Main {
                     break;
 
                 case 2:
-                    /*computer.setCharging(true);
-                    computer.charge();
-                    break;*/
+                    if(computer instanceof Laptop)
+                    {
+                        Laptop temp = (Laptop) computer;
+                        temp.charge();
+                    }
+
+                    if(computer instanceof Desktop)
+                    {
+                        Desktop temp = (Desktop) computer;
+                        temp.charge();
+                    }
+
+                    if(computer instanceof Mobile)
+                    {
+                        Mobile temp = (Mobile) computer;
+                        temp.charge();
+                    }
+
+                    if(computer instanceof Tablet)
+                    {
+                        Tablet temp = (Tablet) computer;
+                        temp.charge();
+                    }
+
+                    break;
 
                 case 3:
                     computer.setHasHDD(true);
