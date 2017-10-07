@@ -17,11 +17,6 @@ public class Computer
         charging = false;
     }
 
-    public void setCharging(boolean charging)
-    {
-        this.charging = charging;
-    }
-
     public boolean isHasUSB()
     {
         return hasUSB;

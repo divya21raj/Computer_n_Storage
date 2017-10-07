@@ -149,10 +149,10 @@ public class Main {
         }
 
         else
-            deviceMenu(computer, cho);
+            deviceMenu(computer);
     }
 
-    static void deviceMenu(Computer computer, int cho) throws IOException
+    static void deviceMenu(Computer computer) throws IOException
     {
         int choice;
 
