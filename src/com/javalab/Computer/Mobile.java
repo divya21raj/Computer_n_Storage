@@ -27,7 +27,7 @@ public class Mobile extends Computer implements Charger
         if(this.charging==false)
         {
             this.charging = true;
-            System.out.println("The Laptop is charging...");
+            System.out.println("The Mobile is charging...");
             scanner.nextLine();
         }
 

@@ -27,7 +27,7 @@ public class Tablet extends Computer implements Charger
         if(this.charging==false)
         {
             this.charging = true;
-            System.out.println("The Laptop is charging...");
+            System.out.println("The Tablet is charging...");
             scanner.nextLine();
         }
 
